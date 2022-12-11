@@ -175,16 +175,118 @@ requests.get(
 }
 ```
 
-This endpoint returns a portfolio.
+This endpoint returns all portfolios created by the user.
 
 ### HTTP Request
 
-`POST /v1/portfolio_optimizer/portfolio/:user_id`
+`POST /v1/portfolio_optimizer/portfolio/:UserId`
 
 ### URL Parameters
 
 Parameter | Required  | Description
 --------- |-----------| -----------
 UserId | required  | User's ID
+
+
+# Project
+
+## Create a project
+
+```python
+import requests
+data = {
+  "PortfolioID": 1,
+  "BusinessUnit": "DataDepartment",
+  "Name": "RefactoDatalake",
+  "Reference": "R01",
+  "DurationDays": 180,
+  "CostEuros": 50000,
+  "PriorizationIndex": None,
+  "IsMandatory": False
+}
+requests.post(
+  '{base_url}/v1/portfolio_optimizer/project',
+  json=data
+)
+```
+
+> Returns JSON structured like this:
+
+```json
+{
+  "Status": 201,
+  "Id": 1
+}
+```
+
+This endpoint creates a project.
+
+### HTTP Request
+
+`POST /v1/portfolio_optimizer/portfolio`
+
+### URL Parameters
+
+Parameter | Required | Description
+--------- |----------| -----------
+PortfolioID | required | Portfolio ID the project belongs to
+BusinessUnit | optional | Project's business unit
+Name | required | Project's name
+Reference | required | Project's reference
+DurationDays | required | Project's duration in days
+CostEuros | required | Project's cost in euros
+PriorizationIndex | optional | Project's priorization index (the lowest the index is, the sooner this project should be planned in the roadmap)
+IsMandatory | required | Is project mandatory (if True, a candidate roadmap must plan this project to be valid)
+
+
+## Get a project
+
+```python
+import requests
+project_id = 1
+requests.get(
+  '{base_url}/v1/portfolio_optimizer/project/:{project_id}'
+)
+```
+
+> Returns JSON structured like this:
+
+```json
+{
+    "Id": 1,
+    "BusinessUnit": "DataDepartment",
+    "Name": "RefactoDatalake",
+    "Reference": "R01",
+    "DurationDays": 180,
+    "CostEuros": 50000,
+    "PriorizationIndex": null,
+    "IsMandatory": false,
+    "CreatedAt": "2022-12-05 11:10:56",
+    "ProjectEvaluation": [
+      {
+        "ProjectMetricName": "created_value",
+        "Value": 500000
+      },
+      {
+        "ProjectMetricName": "risk",
+        "Value": 8
+      }
+    ]
+}
+```
+
+This endpoint returns information about a project.
+
+### HTTP Request
+
+`GET /v1/portfolio_optimizer/project/:ProjectId`
+
+### URL Parameters
+
+Parameter | Required  | Description
+--------- |-----------| -----------
+ProjectId | required  | Project's ID
+
+
 
 
