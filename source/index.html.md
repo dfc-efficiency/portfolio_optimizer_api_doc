@@ -108,6 +108,7 @@ Password | required | User's password
 ```python
 import requests
 data = {
+  "UserId": 1,
   "Name": "MyPorfolio"
 }
 requests.post(
@@ -121,11 +122,12 @@ requests.post(
 ```json
 {
   "Status": 201,
+  "UserId": 1,
   "Id": 1
 }
 ```
 
-This endpoint creates a portfolio.
+This endpoint creates a portfolio if it does not already exist for the given (UserId, Name).
 
 ### HTTP Request
 
@@ -162,7 +164,7 @@ requests.get(
           "BusinessUnit": "DataDepartment",
           "Name": "RefactoDatalake",
           "Reference": "R01",
-          "DurationDays": 180,
+          "DurationMonths": 6,
           "CostEuros": 50000,
           "PriorizationIndex": null,
           "IsMandatory": false,
@@ -199,7 +201,7 @@ data = {
   "BusinessUnit": "DataDepartment",
   "Name": "RefactoDatalake",
   "Reference": "R01",
-  "DurationDays": 180,
+  "DurationMonths": 6,
   "CostEuros": 50000,
   "PriorizationIndex": None,
   "IsMandatory": False
@@ -215,11 +217,13 @@ requests.post(
 ```json
 {
   "Status": 201,
-  "Id": 1
+  "PortfolioID": 1,
+  "Id": 1,
+  "Name": "RefactoDatalake"
 }
 ```
 
-This endpoint creates a project.
+This endpoint creates a project if it does not already exist for the given (PortfolioID, Name).
 
 ### HTTP Request
 
@@ -233,7 +237,7 @@ PortfolioID | required | Portfolio ID the project belongs to
 BusinessUnit | optional | Project's business unit
 Name | required | Project's name
 Reference | required | Project's reference
-DurationDays | required | Project's duration in days
+DurationMonths | required | Project's duration in months
 CostEuros | required | Project's cost in euros
 PriorizationIndex | optional | Project's priorization index (the lowest the index is, the sooner this project should be planned in the roadmap)
 IsMandatory | required | Is project mandatory (if True, a candidate roadmap must plan this project to be valid)
@@ -257,7 +261,7 @@ requests.get(
     "BusinessUnit": "DataDepartment",
     "Name": "RefactoDatalake",
     "Reference": "R01",
-    "DurationDays": 180,
+    "DurationMonths": 180,
     "CostEuros": 50000,
     "PriorizationIndex": null,
     "IsMandatory": false,
@@ -271,7 +275,27 @@ requests.get(
         "ProjectMetricName": "risk",
         "Value": 8
       }
-    ]
+    ],
+  "ProjectStartingConstraint": {
+    "Date": "2023-10-01",
+    "Type": "Before"
+  },
+  "ProjectsConstraint": [
+    {
+      "ProjectAID": 1,
+      "ProjectBID": 32,
+      "Type": "NoOverlap",
+      "MonthIndexDelay": 2 
+    }
+  ],
+  "ProjectResourceNeeds": [
+    {
+      "ResourceTypeID": 5,
+      "MonthIndex": 1,
+      "Need": 60,
+      "NeedUnit": "JH"
+    }
+  ]
 }
 ```
 
@@ -288,5 +312,310 @@ Parameter | Required  | Description
 ProjectId | required  | Project's ID
 
 
+# Constraints
+
+## Create a project constraint
+
+```python
+import requests
+data = {
+  "ProjectAId": 1,
+  "ProjectBId": 32,
+  "Type": "NoOverlap",
+  "MonthlyIndexDelay": 2
+}
+requests.post(
+  '{base_url}/v1/portfolio_optimizer/project_constraint',
+  json=data
+)
+```
+
+> Returns JSON structured like this:
+
+```json
+{
+  "Status": 201,
+  "ProjectAId": 1,
+  "ProjectBId": 32,
+  "Type": "NoOverlap",
+  "MonthlyIndexDelay": 2
+}
+```
+
+This endpoint creates a project constraint if it does not already exist for the given (ProjectAId, ProjectBId).
+
+### HTTP Request
+
+`POST /v1/portfolio_optimizer/project_constraint`
+
+### URL Parameters
+
+Parameter | Required | Description
+--------- |----------| -----------
+ProjectAId | required | Project A ID (warning: project roles are not symmetric)
+ProjectBId | required | Project B ID (warning: project roles are not symmetric)
+Type | required | Type of constraint (NoOverlap)
+MonthlyIndexDelay | required | Number of months between two projects overlap
+
+
+## Create a project starting constraint
+
+```python
+import requests
+data = {
+  "ProjectId": 1,
+  "Date": "2023-10-01",
+  "Type": "Before"
+}
+requests.post(
+  '{base_url}/v1/portfolio_optimizer/project_starting_constraint',
+  json=data
+)
+```
+
+> Returns JSON structured like this:
+
+```json
+{
+  "Status": 201,
+  "ProjectId": 1,
+  "Date": "2023-10-01",
+  "Type": "Before"
+}
+```
+
+This endpoint creates a project starting constraint.
+
+### HTTP Request
+
+`POST /v1/portfolio_optimizer/project_starting_constraint`
+
+### URL Parameters
+
+Parameter | Required | Description
+--------- |----------| -----------
+ProjectId | required | Project ID holding the constraint
+Date | required | Date reference
+Type | required | Type of constraint (exact, before, after)
+
+
+
+# Resources
+
+## Create a resource type
+
+```python
+import requests
+data = {
+  "PortfolioId": 1,
+  "Name": "data_engineer",
+  "TotalAvailability": 500,
+  "AvailabilityUnit": "JH"
+}
+requests.post(
+  '{base_url}/v1/portfolio_optimizer/resource_type',
+  json=data
+)
+```
+
+> Returns JSON structured like this:
+
+```json
+{
+  "Status": 201,
+  "PortfolioId": 1,
+  "Name": "data_engineer",
+  "ResourceTypeId": 1
+}
+```
+
+This endpoint creates a resource type if it does not already exist for the given (PortfolioId, Name).
+
+### HTTP Request
+
+`POST /v1/portfolio_optimizer/resource_type`
+
+### URL Parameters
+
+Parameter | Required | Description
+--------- |----------| -----------
+PortfolioId | required | Portfolio ID for which the resource type is created
+Name | required | Resource type's name
+TotalAvailability | required | Resource total availability for the all portfolio
+AvailabilityUnit | required | Unit for availability (JH, days, months)
+
+
+## Create a resource type availability
+
+```python
+import requests
+data = {
+  "ResourceTypeId": 1,
+  "Year": 2024,
+  "Month": 10,
+  "Availability": 10,
+  "AvailabilityUnit": "JH"
+}
+requests.post(
+  '{base_url}/v1/portfolio_optimizer/resource_type_availability',
+  json=data
+)
+```
+
+> Returns JSON structured like this:
+
+```json
+{
+  "Status": 201,
+  "ResourceTypeId": 1,
+  "Year": 2024,
+  "Month": 10
+}
+```
+
+This endpoint creates a resource availability if it does not already exist for the given (ResourceTypeId, Year, Month).
+
+### HTTP Request
+
+`POST /v1/portfolio_optimizer/resource_type_availability`
+
+### URL Parameters
+
+Parameter | Required | Description
+--------- |----------| -----------
+ResourceTypeId | required | Resource Type ID
+Year | required | Year for the resource availability
+Month | required | Resource total availability for the all portfolio
+Availability | required | Resource availability for year/month
+AvailabilityUnit | required | Unit for availability
+
+
+## Create a resource need
+
+```python
+import requests
+data = {
+  "ResourceTypeId": 1,
+  "ProjectId": 1,
+  "MonthIndex": 1,
+  "Need": 5,
+  "NeedUnit": "JH"
+}
+requests.post(
+  '{base_url}/v1/portfolio_optimizer/resource_type_need',
+  json=data
+)
+```
+
+> Returns JSON structured like this:
+
+```json
+{
+  "Status": 201,
+  "ResourceTypeId": 1,
+  "ProjectId": 1,
+  "MonthIndex": 1
+}
+```
+
+This endpoint creates a resource need for a project if it does not already exist for the given (ResourceTypeId, ProjectId, MonthIndex).
+
+### HTTP Request
+
+`POST /v1/portfolio_optimizer/resource_type_need`
+
+### URL Parameters
+
+Parameter | Required | Description
+--------- |----------| -----------
+ResourceTypeId | required | Resource Type ID
+ProjectId | required | Project ID for which the resource is needed
+MonthIndex | required | Project month index for which the resource is needed
+Need | required | Resource need expressed in NeedUnit
+NeedUnit | required | Unit of ressource need
+
+
+
+# Project Metrics
+
+## Create a project metric
+
+```python
+import requests
+data = {
+  "Name": "risk",
+  "RangeMin": 0,
+  "RangeMax": None
+}
+requests.post(
+  '{base_url}/v1/portfolio_optimizer/project_metric',
+  json=data
+)
+```
+
+> Returns JSON structured like this:
+
+```json
+{
+  "Status": 201,
+  "Id": 1,
+  "Name": 1
+}
+```
+
+This endpoint creates project metric if does not already exist for the given (Name)
+
+### HTTP Request
+
+`POST /v1/portfolio_optimizer/project_metric`
+
+### URL Parameters
+
+Parameter | Required | Description
+--------- |----------| -----------
+Name | required | Metric's name
+RangeMin | required | Minimum value the metric can take (if null, means - infinity)
+RangeMax | required | Maximum value the metric can take (if null, means + infinity)
+
+
+
+## Evaluate a project
+
+```python
+import requests
+data = {
+  "ProjectId": 1,
+  "ProjectMetricId": 1,
+  "Value": 8
+}
+requests.post(
+  '{base_url}/v1/portfolio_optimizer/project_evaluation',
+  json=data
+)
+```
+
+> Returns JSON structured like this:
+
+```json
+{
+  "Status": 201,
+  "ProjectId": 1,
+  "ProjectMetricId": 1
+}
+```
+
+This endpoint creates project evaluation if does not already exist for the given (ProjectId, ProjectMetricId)
+
+### HTTP Request
+
+`POST /v1/portfolio_optimizer/project_evaluation`
+
+### URL Parameters
+
+Parameter | Required | Description
+--------- |----------| -----------
+ProjectId | required | Project Id to evaluate
+ProjectMetricId | required | Metric Id that evaluates the project
+Value | required | Project evaluation value using the metric
 
 
