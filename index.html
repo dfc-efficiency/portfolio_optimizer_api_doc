@@ -352,6 +352,42 @@
               </ul>
           </li>
           <li>
+            <a href="#constraints" class="toc-h1 toc-link" data-title="Constraints">Constraints</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#create-a-project-constraint" class="toc-h2 toc-link" data-title="Create a project constraint">Create a project constraint</a>
+                  </li>
+                  <li>
+                    <a href="#create-a-project-starting-constraint" class="toc-h2 toc-link" data-title="Create a project starting constraint">Create a project starting constraint</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#resources" class="toc-h1 toc-link" data-title="Resources">Resources</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#create-a-resource-type" class="toc-h2 toc-link" data-title="Create a resource type">Create a resource type</a>
+                  </li>
+                  <li>
+                    <a href="#create-a-resource-type-availability" class="toc-h2 toc-link" data-title="Create a resource type availability">Create a resource type availability</a>
+                  </li>
+                  <li>
+                    <a href="#create-a-resource-need" class="toc-h2 toc-link" data-title="Create a resource need">Create a resource need</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#project-metrics" class="toc-h1 toc-link" data-title="Project Metrics">Project Metrics</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#create-a-project-metric" class="toc-h2 toc-link" data-title="Create a project metric">Create a project metric</a>
+                  </li>
+                  <li>
+                    <a href="#evaluate-a-project" class="toc-h2 toc-link" data-title="Evaluate a project">Evaluate a project</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
             <a href="#errors" class="toc-h1 toc-link" data-title="Errors">Errors</a>
           </li>
       </ul>
@@ -447,6 +483,7 @@
 </tbody></table>
 <h1 id='portfolio'>Portfolio</h1><h2 id='create-a-portfolio'>Create a portfolio</h2><div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
 <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s">"UserId"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
   <span class="s">"Name"</span><span class="p">:</span> <span class="s">"MyPorfolio"</span>
 <span class="p">}</span>
 <span class="n">requests</span><span class="p">.</span><span class="n">post</span><span class="p">(</span>
@@ -459,10 +496,11 @@
 </blockquote>
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
   </span><span class="nl">"Status"</span><span class="p">:</span><span class="w"> </span><span class="mi">201</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"UserId"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
   </span><span class="nl">"Id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
-<p>This endpoint creates a portfolio.</p>
+<p>This endpoint creates a portfolio if it does not already exist for the given (UserId, Name).</p>
 <h3 id='http-request-3'>HTTP Request</h3>
 <p><code>POST /v1/portfolio_optimizer/portfolio</code></p>
 <h3 id='url-parameters-2'>URL Parameters</h3>
@@ -499,7 +537,7 @@
           </span><span class="nl">"BusinessUnit"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DataDepartment"</span><span class="p">,</span><span class="w">
           </span><span class="nl">"Name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"RefactoDatalake"</span><span class="p">,</span><span class="w">
           </span><span class="nl">"Reference"</span><span class="p">:</span><span class="w"> </span><span class="s2">"R01"</span><span class="p">,</span><span class="w">
-          </span><span class="nl">"DurationDays"</span><span class="p">:</span><span class="w"> </span><span class="mi">180</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"DurationMonths"</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w">
           </span><span class="nl">"CostEuros"</span><span class="p">:</span><span class="w"> </span><span class="mi">50000</span><span class="p">,</span><span class="w">
           </span><span class="nl">"PriorizationIndex"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
           </span><span class="nl">"IsMandatory"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
@@ -534,7 +572,7 @@
   <span class="s">"BusinessUnit"</span><span class="p">:</span> <span class="s">"DataDepartment"</span><span class="p">,</span>
   <span class="s">"Name"</span><span class="p">:</span> <span class="s">"RefactoDatalake"</span><span class="p">,</span>
   <span class="s">"Reference"</span><span class="p">:</span> <span class="s">"R01"</span><span class="p">,</span>
-  <span class="s">"DurationDays"</span><span class="p">:</span> <span class="mi">180</span><span class="p">,</span>
+  <span class="s">"DurationMonths"</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
   <span class="s">"CostEuros"</span><span class="p">:</span> <span class="mi">50000</span><span class="p">,</span>
   <span class="s">"PriorizationIndex"</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
   <span class="s">"IsMandatory"</span><span class="p">:</span> <span class="bp">False</span>
@@ -549,10 +587,12 @@
 </blockquote>
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
   </span><span class="nl">"Status"</span><span class="p">:</span><span class="w"> </span><span class="mi">201</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"Id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+  </span><span class="nl">"PortfolioID"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"Id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"Name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"RefactoDatalake"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
-<p>This endpoint creates a project.</p>
+<p>This endpoint creates a project if it does not already exist for the given (PortfolioID, Name).</p>
 <h3 id='http-request-5'>HTTP Request</h3>
 <p><code>POST /v1/portfolio_optimizer/portfolio</code></p>
 <h3 id='url-parameters-4'>URL Parameters</h3>
@@ -584,9 +624,9 @@
 <td>Project&#39;s reference</td>
 </tr>
 <tr>
-<td>DurationDays</td>
+<td>DurationMonths</td>
 <td>required</td>
-<td>Project&#39;s duration in days</td>
+<td>Project&#39;s duration in months</td>
 </tr>
 <tr>
 <td>CostEuros</td>
@@ -618,7 +658,7 @@
     </span><span class="nl">"BusinessUnit"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DataDepartment"</span><span class="p">,</span><span class="w">
     </span><span class="nl">"Name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"RefactoDatalake"</span><span class="p">,</span><span class="w">
     </span><span class="nl">"Reference"</span><span class="p">:</span><span class="w"> </span><span class="s2">"R01"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"DurationDays"</span><span class="p">:</span><span class="w"> </span><span class="mi">180</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"DurationMonths"</span><span class="p">:</span><span class="w"> </span><span class="mi">180</span><span class="p">,</span><span class="w">
     </span><span class="nl">"CostEuros"</span><span class="p">:</span><span class="w"> </span><span class="mi">50000</span><span class="p">,</span><span class="w">
     </span><span class="nl">"PriorizationIndex"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
     </span><span class="nl">"IsMandatory"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
@@ -632,7 +672,27 @@
         </span><span class="nl">"ProjectMetricName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"risk"</span><span class="p">,</span><span class="w">
         </span><span class="nl">"Value"</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="w">
       </span><span class="p">}</span><span class="w">
-    </span><span class="p">]</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"ProjectStartingConstraint"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"Date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2023-10-01"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"Type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Before"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"ProjectsConstraint"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"ProjectAID"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"ProjectBID"</span><span class="p">:</span><span class="w"> </span><span class="mi">32</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"Type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"NoOverlap"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"MonthIndexDelay"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w"> 
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"ProjectResourceNeeds"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"ResourceTypeID"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"MonthIndex"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"Need"</span><span class="p">:</span><span class="w"> </span><span class="mi">60</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"NeedUnit"</span><span class="p">:</span><span class="w"> </span><span class="s2">"JH"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>This endpoint returns information about a project.</p>
@@ -650,6 +710,377 @@
 <td>ProjectId</td>
 <td>required</td>
 <td>Project&#39;s ID</td>
+</tr>
+</tbody></table>
+<h1 id='constraints'>Constraints</h1><h2 id='create-a-project-constraint'>Create a project constraint</h2><div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s">"ProjectAId"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="s">"ProjectBId"</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span>
+  <span class="s">"Type"</span><span class="p">:</span> <span class="s">"NoOverlap"</span><span class="p">,</span>
+  <span class="s">"MonthlyIndexDelay"</span><span class="p">:</span> <span class="mi">2</span>
+<span class="p">}</span>
+<span class="n">requests</span><span class="p">.</span><span class="n">post</span><span class="p">(</span>
+  <span class="s">'{base_url}/v1/portfolio_optimizer/project_constraint'</span><span class="p">,</span>
+  <span class="n">json</span><span class="o">=</span><span class="n">data</span>
+<span class="p">)</span>
+</code></pre></div>
+<blockquote>
+<p>Returns JSON structured like this:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"Status"</span><span class="p">:</span><span class="w"> </span><span class="mi">201</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"ProjectAId"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"ProjectBId"</span><span class="p">:</span><span class="w"> </span><span class="mi">32</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"Type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"NoOverlap"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"MonthlyIndexDelay"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>This endpoint creates a project constraint if it does not already exist for the given (ProjectAId, ProjectBId).</p>
+<h3 id='http-request-7'>HTTP Request</h3>
+<p><code>POST /v1/portfolio_optimizer/project_constraint</code></p>
+<h3 id='url-parameters-6'>URL Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>ProjectAId</td>
+<td>required</td>
+<td>Project A ID (warning: project roles are not symmetric)</td>
+</tr>
+<tr>
+<td>ProjectBId</td>
+<td>required</td>
+<td>Project B ID (warning: project roles are not symmetric)</td>
+</tr>
+<tr>
+<td>Type</td>
+<td>required</td>
+<td>Type of constraint (NoOverlap)</td>
+</tr>
+<tr>
+<td>MonthlyIndexDelay</td>
+<td>required</td>
+<td>Number of months between two projects overlap</td>
+</tr>
+</tbody></table>
+<h2 id='create-a-project-starting-constraint'>Create a project starting constraint</h2><div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s">"ProjectId"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="s">"Date"</span><span class="p">:</span> <span class="s">"2023-10-01"</span><span class="p">,</span>
+  <span class="s">"Type"</span><span class="p">:</span> <span class="s">"Before"</span>
+<span class="p">}</span>
+<span class="n">requests</span><span class="p">.</span><span class="n">post</span><span class="p">(</span>
+  <span class="s">'{base_url}/v1/portfolio_optimizer/project_starting_constraint'</span><span class="p">,</span>
+  <span class="n">json</span><span class="o">=</span><span class="n">data</span>
+<span class="p">)</span>
+</code></pre></div>
+<blockquote>
+<p>Returns JSON structured like this:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"Status"</span><span class="p">:</span><span class="w"> </span><span class="mi">201</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"ProjectId"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"Date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2023-10-01"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"Type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Before"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>This endpoint creates a project starting constraint.</p>
+<h3 id='http-request-8'>HTTP Request</h3>
+<p><code>POST /v1/portfolio_optimizer/project_starting_constraint</code></p>
+<h3 id='url-parameters-7'>URL Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>ProjectId</td>
+<td>required</td>
+<td>Project ID holding the constraint</td>
+</tr>
+<tr>
+<td>Date</td>
+<td>required</td>
+<td>Date reference</td>
+</tr>
+<tr>
+<td>Type</td>
+<td>required</td>
+<td>Type of constraint (exact, before, after)</td>
+</tr>
+</tbody></table>
+<h1 id='resources'>Resources</h1><h2 id='create-a-resource-type'>Create a resource type</h2><div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s">"PortfolioId"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="s">"Name"</span><span class="p">:</span> <span class="s">"data_engineer"</span><span class="p">,</span>
+  <span class="s">"TotalAvailability"</span><span class="p">:</span> <span class="mi">500</span><span class="p">,</span>
+  <span class="s">"AvailabilityUnit"</span><span class="p">:</span> <span class="s">"JH"</span>
+<span class="p">}</span>
+<span class="n">requests</span><span class="p">.</span><span class="n">post</span><span class="p">(</span>
+  <span class="s">'{base_url}/v1/portfolio_optimizer/resource_type'</span><span class="p">,</span>
+  <span class="n">json</span><span class="o">=</span><span class="n">data</span>
+<span class="p">)</span>
+</code></pre></div>
+<blockquote>
+<p>Returns JSON structured like this:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"Status"</span><span class="p">:</span><span class="w"> </span><span class="mi">201</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"PortfolioId"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"Name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"data_engineer"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"ResourceTypeId"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>This endpoint creates a resource type if it does not already exist for the given (PortfolioId, Name).</p>
+<h3 id='http-request-9'>HTTP Request</h3>
+<p><code>POST /v1/portfolio_optimizer/resource_type</code></p>
+<h3 id='url-parameters-8'>URL Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>PortfolioId</td>
+<td>required</td>
+<td>Portfolio ID for which the resource type is created</td>
+</tr>
+<tr>
+<td>Name</td>
+<td>required</td>
+<td>Resource type&#39;s name</td>
+</tr>
+<tr>
+<td>TotalAvailability</td>
+<td>required</td>
+<td>Resource total availability for the all portfolio</td>
+</tr>
+<tr>
+<td>AvailabilityUnit</td>
+<td>required</td>
+<td>Unit for availability (JH, days, months)</td>
+</tr>
+</tbody></table>
+<h2 id='create-a-resource-type-availability'>Create a resource type availability</h2><div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s">"ResourceTypeId"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="s">"Year"</span><span class="p">:</span> <span class="mi">2024</span><span class="p">,</span>
+  <span class="s">"Month"</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+  <span class="s">"Availability"</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+  <span class="s">"AvailabilityUnit"</span><span class="p">:</span> <span class="s">"JH"</span>
+<span class="p">}</span>
+<span class="n">requests</span><span class="p">.</span><span class="n">post</span><span class="p">(</span>
+  <span class="s">'{base_url}/v1/portfolio_optimizer/resource_type_availability'</span><span class="p">,</span>
+  <span class="n">json</span><span class="o">=</span><span class="n">data</span>
+<span class="p">)</span>
+</code></pre></div>
+<blockquote>
+<p>Returns JSON structured like this:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"Status"</span><span class="p">:</span><span class="w"> </span><span class="mi">201</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"ResourceTypeId"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"Year"</span><span class="p">:</span><span class="w"> </span><span class="mi">2024</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"Month"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>This endpoint creates a resource availability if it does not already exist for the given (ResourceTypeId, Year, Month).</p>
+<h3 id='http-request-10'>HTTP Request</h3>
+<p><code>POST /v1/portfolio_optimizer/resource_type_availability</code></p>
+<h3 id='url-parameters-9'>URL Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>ResourceTypeId</td>
+<td>required</td>
+<td>Resource Type ID</td>
+</tr>
+<tr>
+<td>Year</td>
+<td>required</td>
+<td>Year for the resource availability</td>
+</tr>
+<tr>
+<td>Month</td>
+<td>required</td>
+<td>Resource total availability for the all portfolio</td>
+</tr>
+<tr>
+<td>Availability</td>
+<td>required</td>
+<td>Resource availability for year/month</td>
+</tr>
+<tr>
+<td>AvailabilityUnit</td>
+<td>required</td>
+<td>Unit for availability</td>
+</tr>
+</tbody></table>
+<h2 id='create-a-resource-need'>Create a resource need</h2><div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s">"ResourceTypeId"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="s">"ProjectId"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="s">"MonthIndex"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="s">"Need"</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+  <span class="s">"NeedUnit"</span><span class="p">:</span> <span class="s">"JH"</span>
+<span class="p">}</span>
+<span class="n">requests</span><span class="p">.</span><span class="n">post</span><span class="p">(</span>
+  <span class="s">'{base_url}/v1/portfolio_optimizer/resource_type_need'</span><span class="p">,</span>
+  <span class="n">json</span><span class="o">=</span><span class="n">data</span>
+<span class="p">)</span>
+</code></pre></div>
+<blockquote>
+<p>Returns JSON structured like this:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"Status"</span><span class="p">:</span><span class="w"> </span><span class="mi">201</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"ResourceTypeId"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"ProjectId"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"MonthIndex"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>This endpoint creates a resource need for a project if it does not already exist for the given (ResourceTypeId, ProjectId, MonthIndex).</p>
+<h3 id='http-request-11'>HTTP Request</h3>
+<p><code>POST /v1/portfolio_optimizer/resource_type_need</code></p>
+<h3 id='url-parameters-10'>URL Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>ResourceTypeId</td>
+<td>required</td>
+<td>Resource Type ID</td>
+</tr>
+<tr>
+<td>ProjectId</td>
+<td>required</td>
+<td>Project ID for which the resource is needed</td>
+</tr>
+<tr>
+<td>MonthIndex</td>
+<td>required</td>
+<td>Project month index for which the resource is needed</td>
+</tr>
+<tr>
+<td>Need</td>
+<td>required</td>
+<td>Resource need expressed in NeedUnit</td>
+</tr>
+<tr>
+<td>NeedUnit</td>
+<td>required</td>
+<td>Unit of ressource need</td>
+</tr>
+</tbody></table>
+<h1 id='project-metrics'>Project Metrics</h1><h2 id='create-a-project-metric'>Create a project metric</h2><div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s">"Name"</span><span class="p">:</span> <span class="s">"risk"</span><span class="p">,</span>
+  <span class="s">"RangeMin"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="s">"RangeMax"</span><span class="p">:</span> <span class="bp">None</span>
+<span class="p">}</span>
+<span class="n">requests</span><span class="p">.</span><span class="n">post</span><span class="p">(</span>
+  <span class="s">'{base_url}/v1/portfolio_optimizer/project_metric'</span><span class="p">,</span>
+  <span class="n">json</span><span class="o">=</span><span class="n">data</span>
+<span class="p">)</span>
+</code></pre></div>
+<blockquote>
+<p>Returns JSON structured like this:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"Status"</span><span class="p">:</span><span class="w"> </span><span class="mi">201</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"Id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"Name"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>This endpoint creates project metric if does not already exist for the given (Name)</p>
+<h3 id='http-request-12'>HTTP Request</h3>
+<p><code>POST /v1/portfolio_optimizer/project_metric</code></p>
+<h3 id='url-parameters-11'>URL Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Name</td>
+<td>required</td>
+<td>Metric&#39;s name</td>
+</tr>
+<tr>
+<td>RangeMin</td>
+<td>required</td>
+<td>Minimum value the metric can take (if null, means - infinity)</td>
+</tr>
+<tr>
+<td>RangeMax</td>
+<td>required</td>
+<td>Maximum value the metric can take (if null, means + infinity)</td>
+</tr>
+</tbody></table>
+<h2 id='evaluate-a-project'>Evaluate a project</h2><div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s">"ProjectId"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="s">"ProjectMetricId"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="s">"Value"</span><span class="p">:</span> <span class="mi">8</span>
+<span class="p">}</span>
+<span class="n">requests</span><span class="p">.</span><span class="n">post</span><span class="p">(</span>
+  <span class="s">'{base_url}/v1/portfolio_optimizer/project_evaluation'</span><span class="p">,</span>
+  <span class="n">json</span><span class="o">=</span><span class="n">data</span>
+<span class="p">)</span>
+</code></pre></div>
+<blockquote>
+<p>Returns JSON structured like this:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"Status"</span><span class="p">:</span><span class="w"> </span><span class="mi">201</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"ProjectId"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"ProjectMetricId"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>This endpoint creates project evaluation if does not already exist for the given (ProjectId, ProjectMetricId)</p>
+<h3 id='http-request-13'>HTTP Request</h3>
+<p><code>POST /v1/portfolio_optimizer/project_evaluation</code></p>
+<h3 id='url-parameters-12'>URL Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>ProjectId</td>
+<td>required</td>
+<td>Project Id to evaluate</td>
+</tr>
+<tr>
+<td>ProjectMetricId</td>
+<td>required</td>
+<td>Metric Id that evaluates the project</td>
+</tr>
+<tr>
+<td>Value</td>
+<td>required</td>
+<td>Project evaluation value using the metric</td>
 </tr>
 </tbody></table>
 <h1 id='errors'>Errors</h1>
