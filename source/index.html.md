@@ -604,7 +604,7 @@ requests.post(
 }
 ```
 
-This endpoint creates project evaluation if does not already exist for the given (ProjectId, ProjectMetricId)
+This endpoint creates project evaluation if it does not already exist for the given (ProjectId, ProjectMetricId)
 
 ### HTTP Request
 
@@ -619,3 +619,285 @@ ProjectMetricId | required | Metric Id that evaluates the project
 Value | required | Project evaluation value using the metric
 
 
+# Roadmaps
+
+## Create a roadmap exercise
+
+```python
+import requests
+data = {
+  "PortfolioId": 1,
+  "UserId": 1,
+  "StartDate": "2023-01-01",
+  "MaxStartingMonthIndex": 12
+}
+requests.post(
+  '{base_url}/v1/portfolio_optimizer/roadmap_exercise',
+  json=data
+)
+```
+
+> Returns JSON structured like this:
+
+```json
+{
+  "Status": 201,
+  "Id": 1,
+  "PortfolioId": 1,
+  "StartDate": "2023-01-01"
+}
+```
+
+This endpoint creates a new roadmap exercise for the given PortfolioId.
+
+### HTTP Request
+
+`POST /v1/portfolio_optimizer/roadmap_exercise`
+
+### URL Parameters
+
+Parameter | Required | Description
+--------- |----------| -----------
+PortfolioId | required | Portfolio ID for which the roadmap exercise is created
+UserId | required | User ID that creates the roadmap exercise
+StartDate | required | The roadmap starting date
+MaxStartingMonthIndex | required | The maximum month index a project can start (1 -> january ... 12 -> december)
+
+
+## Create a roadmap candidate
+
+```python
+import requests
+data = {
+  "RoadmapExerciseId": 1,
+  "Tag": "Reference roadmap",
+  "Projects": [
+    {
+      "ProjectId": 1,
+      "StartingMonthIndex": 5
+    },
+    {
+      "ProjectId": 2,
+      "StartingMonthIndex": 7
+    }
+  ]
+}
+requests.post(
+  '{base_url}/v1/portfolio_optimizer/roadmap_candidate',
+  json=data
+)
+```
+
+> Returns JSON structured like this:
+
+```json
+{
+  "Status": 201,
+  "Id": 1,
+  "RoadmapExerciseId": 1,
+}
+```
+
+This endpoint creates a new roadmap candidate for the given roadmap exercise.
+
+### HTTP Request
+
+`POST /v1/portfolio_optimizer/roadmap_candidate`
+
+### URL Parameters
+
+Parameter | Required | Description
+--------- |----------| -----------
+RoadmapExerciseId | required | Roadmap exercice ID of the roadmap candidate
+Tag | optional | Tag description the roadmap
+
+
+
+## Get a roadmap candidate
+
+```python
+import requests
+roadmap_candidate_id = 123
+requests.get(
+  '{base_url}/v1/portfolio_optimizer/roadmap_candidate/:{roadmap_candidate_id}'
+)
+```
+
+> Returns JSON structured like this:
+
+```json
+{
+  "Status": 201,
+  "Id": 123,
+  "RoadmapExerciseId": 1,
+  "Tag": "Reference roadmap",
+  "Projects": [
+    {
+      "ProjectId": 1,
+      "StartingMonthIndex": 5
+    },
+    {
+      "ProjectId": 2,
+      "StartingMonthIndex": 7
+    }
+  ],
+  "RoadmapCandidateEvaluation": [
+    {
+      "RoadmapCandidateMetric": "priorization_order",
+      "Value": 10
+    },
+    {
+      "RoadmapCandidateMetric": "global_value_creation",
+      "Value": 520
+    }
+  ],
+  "IsValid": true,
+  "Hash": "57000001",
+  "GenerationId": 45,
+  "CreatedAt": "2022-10-05 12:41:25"
+}
+```
+
+This endpoint returns a roadmap candidate.
+
+### HTTP Request
+
+`GET /v1/portfolio_optimizer/roadmap_candidate`
+
+
+## Create a roadmap candidate evaluation
+
+```python
+import requests
+data = {
+  "RoadmapCandidateId": 1,
+  "RoadmapCandidateMetricId": 1,
+  "Value": 50
+}
+requests.post(
+  '{base_url}/v1/portfolio_optimizer/roadmap_candidate_evaluation',
+  json=data
+)
+```
+
+> Returns JSON structured like this:
+
+```json
+{
+  "Status": 201,
+  "RoadmapCandidateId": 1,
+  "RoadmapCandidateMetricId": 1,
+}
+```
+
+This endpoint creates a new roadmap candidate evaluation.
+
+### HTTP Request
+
+`POST /v1/portfolio_optimizer/roadmap_candidate_evaluation`
+
+### URL Parameters
+
+Parameter | Required | Description
+--------- |----------| -----------
+RoadmapCandidateId | required | Roadmap candidate Id
+RoadmapCandidateMetricId | required | Roadmap candidate metric Id
+Value | required | Metric value
+
+
+# Create an optimization run
+
+## Create a optimization run request
+
+```python
+import requests
+data = {
+  "RoadmapExerciseId": 1,
+  "UserId": 1,
+  "Config": {"nbr_generations": ...}
+}
+requests.post(
+  '{base_url}/v1/portfolio_optimizer/optimization_run',
+  json=data
+)
+```
+
+> Returns JSON structured like this:
+
+```json
+{
+  "Status": 201,
+  "RoadmapExerciseId": 1,
+  "RunIndex": 42
+}
+```
+
+This endpoint creates a new optimization run for the roadmap exercise.
+
+### HTTP Request
+
+`POST /v1/portfolio_optimizer/optimization_run`
+
+### URL Parameters
+
+Parameter | Required | Description
+--------- |----------| -----------
+RoadmapExerciseId | required | Roadmap Exercise Id
+UserId | required | User Id that trigger the run
+Config | required | Run config
+
+
+
+## Get the status of an optimization run
+
+```python
+import requests
+roadmap_exercise_id = 1
+requests.get(
+  '{base_url}/v1/portfolio_optimizer/optimization_run/:{roadmap_exercise_id}',
+)
+```
+
+> Returns JSON structured like this:
+
+```json
+{
+  "Id": 5412,
+  "RoadmapExerciseId": 1,
+  "RunIndex": 42,
+  "Config": {"nbr_generations":  ...},
+  "Status": "Success",
+  "OptimizationEvaluation": [
+    {
+      "OptimizationMetric": "pareto_first_front_size",
+      "Value": 324
+    },
+    {
+      "OptimizationMetric": "generation_mean_computation_time_seconds",
+      "Value": 1206
+    }
+  ],
+  "Generation": [
+    {
+      "GenerationId": 5412,
+      "Index": 1,
+      "CreatedAt": "2022-10-21 10:59:30"
+    }
+  ],
+  "LastStatusChangedAt": "2022-10-21 12:10:42",
+  "CreatedAt": "2022-10-21 10:57:28"
+}
+```
+
+This endpoint returns the status of an optimization run.
+
+### HTTP Request
+
+`POST /v1/portfolio_optimizer/optimization_run/:{RoadmapExerciseId}:{OptimizationRunId}`
+
+### URL Parameters
+
+Parameter | Required | Description
+--------- |----------| -----------
+RoadmapExerciseId | required | Roadmap Exercise Id of the optimization run
+OptimizationRunId | optional | Optimization run ID (returns the one with the highest RunIndex)
