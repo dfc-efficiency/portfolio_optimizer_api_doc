@@ -312,7 +312,86 @@ Parameter | Required  | Description
 ProjectId | required  | Project's ID
 
 
-# Constraints
+## Create a project metric
+
+```python
+import requests
+data = {
+  "Name": "risk",
+  "RangeMin": 0,
+  "RangeMax": None
+}
+requests.post(
+  '{base_url}/v1/portfolio_optimizer/project_metric',
+  json=data
+)
+```
+
+> Returns JSON structured like this:
+
+```json
+{
+  "Status": 201,
+  "Id": 1,
+  "Name": 1
+}
+```
+
+This endpoint creates project metric if does not already exist for the given (Name)
+
+### HTTP Request
+
+`POST /v1/portfolio_optimizer/project_metric`
+
+### URL Parameters
+
+Parameter | Required | Description
+--------- |----------| -----------
+Name | required | Metric's name
+RangeMin | required | Minimum value the metric can take (if null, means - infinity)
+RangeMax | required | Maximum value the metric can take (if null, means + infinity)
+
+
+
+## Evaluate a project
+
+```python
+import requests
+data = {
+  "ProjectId": 1,
+  "ProjectMetricId": 1,
+  "Value": 8
+}
+requests.post(
+  '{base_url}/v1/portfolio_optimizer/project_evaluation',
+  json=data
+)
+```
+
+> Returns JSON structured like this:
+
+```json
+{
+  "Status": 201,
+  "ProjectId": 1,
+  "ProjectMetricId": 1
+}
+```
+
+This endpoint creates project evaluation if it does not already exist for the given (ProjectId, ProjectMetricId)
+
+### HTTP Request
+
+`POST /v1/portfolio_optimizer/project_evaluation`
+
+### URL Parameters
+
+Parameter | Required | Description
+--------- |----------| -----------
+ProjectId | required | Project Id to evaluate
+ProjectMetricId | required | Metric Id that evaluates the project
+Value | required | Project evaluation value using the metric
+
 
 ## Create a project constraint
 
@@ -535,90 +614,6 @@ Need | required | Resource need expressed in NeedUnit
 NeedUnit | required | Unit of ressource need
 
 
-
-# Project Metrics
-
-## Create a project metric
-
-```python
-import requests
-data = {
-  "Name": "risk",
-  "RangeMin": 0,
-  "RangeMax": None
-}
-requests.post(
-  '{base_url}/v1/portfolio_optimizer/project_metric',
-  json=data
-)
-```
-
-> Returns JSON structured like this:
-
-```json
-{
-  "Status": 201,
-  "Id": 1,
-  "Name": 1
-}
-```
-
-This endpoint creates project metric if does not already exist for the given (Name)
-
-### HTTP Request
-
-`POST /v1/portfolio_optimizer/project_metric`
-
-### URL Parameters
-
-Parameter | Required | Description
---------- |----------| -----------
-Name | required | Metric's name
-RangeMin | required | Minimum value the metric can take (if null, means - infinity)
-RangeMax | required | Maximum value the metric can take (if null, means + infinity)
-
-
-
-## Evaluate a project
-
-```python
-import requests
-data = {
-  "ProjectId": 1,
-  "ProjectMetricId": 1,
-  "Value": 8
-}
-requests.post(
-  '{base_url}/v1/portfolio_optimizer/project_evaluation',
-  json=data
-)
-```
-
-> Returns JSON structured like this:
-
-```json
-{
-  "Status": 201,
-  "ProjectId": 1,
-  "ProjectMetricId": 1
-}
-```
-
-This endpoint creates project evaluation if it does not already exist for the given (ProjectId, ProjectMetricId)
-
-### HTTP Request
-
-`POST /v1/portfolio_optimizer/project_evaluation`
-
-### URL Parameters
-
-Parameter | Required | Description
---------- |----------| -----------
-ProjectId | required | Project Id to evaluate
-ProjectMetricId | required | Metric Id that evaluates the project
-Value | required | Project evaluation value using the metric
-
-
 # Roadmaps
 
 ## Create a roadmap exercise
@@ -805,7 +800,7 @@ RoadmapCandidateMetricId | required | Roadmap candidate metric Id
 Value | required | Metric value
 
 
-# Create an optimization run
+# Optimization
 
 ## Create a optimization run request
 
