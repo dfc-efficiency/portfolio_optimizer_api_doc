@@ -388,6 +388,34 @@
               </ul>
           </li>
           <li>
+            <a href="#roadmaps" class="toc-h1 toc-link" data-title="Roadmaps">Roadmaps</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#create-a-roadmap-exercise" class="toc-h2 toc-link" data-title="Create a roadmap exercise">Create a roadmap exercise</a>
+                  </li>
+                  <li>
+                    <a href="#create-a-roadmap-candidate" class="toc-h2 toc-link" data-title="Create a roadmap candidate">Create a roadmap candidate</a>
+                  </li>
+                  <li>
+                    <a href="#get-a-roadmap-candidate" class="toc-h2 toc-link" data-title="Get a roadmap candidate">Get a roadmap candidate</a>
+                  </li>
+                  <li>
+                    <a href="#create-a-roadmap-candidate-evaluation" class="toc-h2 toc-link" data-title="Create a roadmap candidate evaluation">Create a roadmap candidate evaluation</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#create-an-optimization-run" class="toc-h1 toc-link" data-title="Create an optimization run">Create an optimization run</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#create-a-optimization-run-request" class="toc-h2 toc-link" data-title="Create a optimization run request">Create a optimization run request</a>
+                  </li>
+                  <li>
+                    <a href="#get-the-status-of-an-optimization-run" class="toc-h2 toc-link" data-title="Get the status of an optimization run">Get the status of an optimization run</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
             <a href="#errors" class="toc-h1 toc-link" data-title="Errors">Errors</a>
           </li>
       </ul>
@@ -1056,7 +1084,7 @@
   </span><span class="nl">"ProjectMetricId"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
-<p>This endpoint creates project evaluation if does not already exist for the given (ProjectId, ProjectMetricId)</p>
+<p>This endpoint creates project evaluation if it does not already exist for the given (ProjectId, ProjectMetricId)</p>
 <h3 id='http-request-13'>HTTP Request</h3>
 <p><code>POST /v1/portfolio_optimizer/project_evaluation</code></p>
 <h3 id='url-parameters-12'>URL Parameters</h3>
@@ -1081,6 +1109,306 @@
 <td>Value</td>
 <td>required</td>
 <td>Project evaluation value using the metric</td>
+</tr>
+</tbody></table>
+<h1 id='roadmaps'>Roadmaps</h1><h2 id='create-a-roadmap-exercise'>Create a roadmap exercise</h2><div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s">"PortfolioId"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="s">"UserId"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="s">"StartDate"</span><span class="p">:</span> <span class="s">"2023-01-01"</span><span class="p">,</span>
+  <span class="s">"MaxStartingMonthIndex"</span><span class="p">:</span> <span class="mi">12</span>
+<span class="p">}</span>
+<span class="n">requests</span><span class="p">.</span><span class="n">post</span><span class="p">(</span>
+  <span class="s">'{base_url}/v1/portfolio_optimizer/roadmap_exercise'</span><span class="p">,</span>
+  <span class="n">json</span><span class="o">=</span><span class="n">data</span>
+<span class="p">)</span>
+</code></pre></div>
+<blockquote>
+<p>Returns JSON structured like this:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"Status"</span><span class="p">:</span><span class="w"> </span><span class="mi">201</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"Id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"PortfolioId"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"StartDate"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2023-01-01"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>This endpoint creates a new roadmap exercise for the given PortfolioId.</p>
+<h3 id='http-request-14'>HTTP Request</h3>
+<p><code>POST /v1/portfolio_optimizer/roadmap_exercise</code></p>
+<h3 id='url-parameters-13'>URL Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>PortfolioId</td>
+<td>required</td>
+<td>Portfolio ID for which the roadmap exercise is created</td>
+</tr>
+<tr>
+<td>UserId</td>
+<td>required</td>
+<td>User ID that creates the roadmap exercise</td>
+</tr>
+<tr>
+<td>StartDate</td>
+<td>required</td>
+<td>The roadmap starting date</td>
+</tr>
+<tr>
+<td>MaxStartingMonthIndex</td>
+<td>required</td>
+<td>The maximum month index a project can start (1 -&gt; january ... 12 -&gt; december)</td>
+</tr>
+</tbody></table>
+<h2 id='create-a-roadmap-candidate'>Create a roadmap candidate</h2><div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s">"RoadmapExerciseId"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="s">"Tag"</span><span class="p">:</span> <span class="s">"Reference roadmap"</span><span class="p">,</span>
+  <span class="s">"Projects"</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="s">"ProjectId"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+      <span class="s">"StartingMonthIndex"</span><span class="p">:</span> <span class="mi">5</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="s">"ProjectId"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+      <span class="s">"StartingMonthIndex"</span><span class="p">:</span> <span class="mi">7</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+<span class="n">requests</span><span class="p">.</span><span class="n">post</span><span class="p">(</span>
+  <span class="s">'{base_url}/v1/portfolio_optimizer/roadmap_candidate'</span><span class="p">,</span>
+  <span class="n">json</span><span class="o">=</span><span class="n">data</span>
+<span class="p">)</span>
+</code></pre></div>
+<blockquote>
+<p>Returns JSON structured like this:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"Status"</span><span class="p">:</span><span class="w"> </span><span class="mi">201</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"Id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"RoadmapExerciseId"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>This endpoint creates a new roadmap candidate for the given roadmap exercise.</p>
+<h3 id='http-request-15'>HTTP Request</h3>
+<p><code>POST /v1/portfolio_optimizer/roadmap_candidate</code></p>
+<h3 id='url-parameters-14'>URL Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>RoadmapExerciseId</td>
+<td>required</td>
+<td>Roadmap exercice ID of the roadmap candidate</td>
+</tr>
+<tr>
+<td>Tag</td>
+<td>optional</td>
+<td>Tag description the roadmap</td>
+</tr>
+</tbody></table>
+<h2 id='get-a-roadmap-candidate'>Get a roadmap candidate</h2><div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
+<span class="n">roadmap_candidate_id</span> <span class="o">=</span> <span class="mi">123</span>
+<span class="n">requests</span><span class="p">.</span><span class="n">get</span><span class="p">(</span>
+  <span class="s">'{base_url}/v1/portfolio_optimizer/roadmap_candidate/:{roadmap_candidate_id}'</span>
+<span class="p">)</span>
+</code></pre></div>
+<blockquote>
+<p>Returns JSON structured like this:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"Status"</span><span class="p">:</span><span class="w"> </span><span class="mi">201</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"Id"</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"RoadmapExerciseId"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"Tag"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Reference roadmap"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"Projects"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"ProjectId"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"StartingMonthIndex"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"ProjectId"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"StartingMonthIndex"</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"RoadmapCandidateEvaluation"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"RoadmapCandidateMetric"</span><span class="p">:</span><span class="w"> </span><span class="s2">"priorization_order"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"Value"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"RoadmapCandidateMetric"</span><span class="p">:</span><span class="w"> </span><span class="s2">"global_value_creation"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"Value"</span><span class="p">:</span><span class="w"> </span><span class="mi">520</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"IsValid"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"Hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"57000001"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"GenerationId"</span><span class="p">:</span><span class="w"> </span><span class="mi">45</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"CreatedAt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2022-10-05 12:41:25"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>This endpoint returns a roadmap candidate.</p>
+<h3 id='http-request-16'>HTTP Request</h3>
+<p><code>GET /v1/portfolio_optimizer/roadmap_candidate</code></p>
+<h2 id='create-a-roadmap-candidate-evaluation'>Create a roadmap candidate evaluation</h2><div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s">"RoadmapCandidateId"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="s">"RoadmapCandidateMetricId"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="s">"Value"</span><span class="p">:</span> <span class="mi">50</span>
+<span class="p">}</span>
+<span class="n">requests</span><span class="p">.</span><span class="n">post</span><span class="p">(</span>
+  <span class="s">'{base_url}/v1/portfolio_optimizer/roadmap_candidate_evaluation'</span><span class="p">,</span>
+  <span class="n">json</span><span class="o">=</span><span class="n">data</span>
+<span class="p">)</span>
+</code></pre></div>
+<blockquote>
+<p>Returns JSON structured like this:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"Status"</span><span class="p">:</span><span class="w"> </span><span class="mi">201</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"RoadmapCandidateId"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"RoadmapCandidateMetricId"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>This endpoint creates a new roadmap candidate evaluation.</p>
+<h3 id='http-request-17'>HTTP Request</h3>
+<p><code>POST /v1/portfolio_optimizer/roadmap_candidate_evaluation</code></p>
+<h3 id='url-parameters-15'>URL Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>RoadmapCandidateId</td>
+<td>required</td>
+<td>Roadmap candidate Id</td>
+</tr>
+<tr>
+<td>RoadmapCandidateMetricId</td>
+<td>required</td>
+<td>Roadmap candidate metric Id</td>
+</tr>
+<tr>
+<td>Value</td>
+<td>required</td>
+<td>Metric value</td>
+</tr>
+</tbody></table>
+<h1 id='create-an-optimization-run'>Create an optimization run</h1><h2 id='create-a-optimization-run-request'>Create a optimization run request</h2><div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s">"RoadmapExerciseId"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="s">"UserId"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="s">"Config"</span><span class="p">:</span> <span class="p">{</span><span class="s">"nbr_generations"</span><span class="p">:</span> <span class="p">...}</span>
+<span class="p">}</span>
+<span class="n">requests</span><span class="p">.</span><span class="n">post</span><span class="p">(</span>
+  <span class="s">'{base_url}/v1/portfolio_optimizer/optimization_run'</span><span class="p">,</span>
+  <span class="n">json</span><span class="o">=</span><span class="n">data</span>
+<span class="p">)</span>
+</code></pre></div>
+<blockquote>
+<p>Returns JSON structured like this:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"Status"</span><span class="p">:</span><span class="w"> </span><span class="mi">201</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"RoadmapExerciseId"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"RunIndex"</span><span class="p">:</span><span class="w"> </span><span class="mi">42</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>This endpoint creates a new optimization run for the roadmap exercise.</p>
+<h3 id='http-request-18'>HTTP Request</h3>
+<p><code>POST /v1/portfolio_optimizer/optimization_run</code></p>
+<h3 id='url-parameters-16'>URL Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>RoadmapExerciseId</td>
+<td>required</td>
+<td>Roadmap Exercise Id</td>
+</tr>
+<tr>
+<td>UserId</td>
+<td>required</td>
+<td>User Id that trigger the run</td>
+</tr>
+<tr>
+<td>Config</td>
+<td>required</td>
+<td>Run config</td>
+</tr>
+</tbody></table>
+<h2 id='get-the-status-of-an-optimization-run'>Get the status of an optimization run</h2><div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
+<span class="n">roadmap_exercise_id</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">requests</span><span class="p">.</span><span class="n">get</span><span class="p">(</span>
+  <span class="s">'{base_url}/v1/portfolio_optimizer/optimization_run/:{roadmap_exercise_id}'</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+<blockquote>
+<p>Returns JSON structured like this:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"Id"</span><span class="p">:</span><span class="w"> </span><span class="mi">5412</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"RoadmapExerciseId"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"RunIndex"</span><span class="p">:</span><span class="w"> </span><span class="mi">42</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"Config"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nl">"nbr_generations"</span><span class="p">:</span><span class="w">  </span><span class="err">...</span><span class="p">},</span><span class="w">
+  </span><span class="nl">"Status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Success"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"OptimizationEvaluation"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"OptimizationMetric"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pareto_first_front_size"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"Value"</span><span class="p">:</span><span class="w"> </span><span class="mi">324</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"OptimizationMetric"</span><span class="p">:</span><span class="w"> </span><span class="s2">"generation_mean_computation_time_seconds"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"Value"</span><span class="p">:</span><span class="w"> </span><span class="mi">1206</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"Generation"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"GenerationId"</span><span class="p">:</span><span class="w"> </span><span class="mi">5412</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"Index"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"CreatedAt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2022-10-21 10:59:30"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"LastStatusChangedAt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2022-10-21 12:10:42"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"CreatedAt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2022-10-21 10:57:28"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>This endpoint returns the status of an optimization run.</p>
+<h3 id='http-request-19'>HTTP Request</h3>
+<p><code>POST /v1/portfolio_optimizer/optimization_run/:{RoadmapExerciseId}:{OptimizationRunId}</code></p>
+<h3 id='url-parameters-17'>URL Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>RoadmapExerciseId</td>
+<td>required</td>
+<td>Roadmap Exercise Id of the optimization run</td>
+</tr>
+<tr>
+<td>OptimizationRunId</td>
+<td>optional</td>
+<td>Optimization run ID (returns the one with the highest RunIndex)</td>
 </tr>
 </tbody></table>
 <h1 id='errors'>Errors</h1>
