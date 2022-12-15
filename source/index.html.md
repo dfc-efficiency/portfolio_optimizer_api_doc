@@ -83,7 +83,7 @@ requests.post(
 }
 ```
 
-This endpoint creates a user.
+This endpoint creates a user with the specified role ID.
 
 ### HTTP Request
 
@@ -127,7 +127,8 @@ requests.post(
 }
 ```
 
-This endpoint creates a portfolio if it does not already exist for the given (UserId, Name).
+This endpoint creates a portfolio. The tuple (UserId, Name) must be unique.
+Return an error if (UserId, Name) already exists in the database.
 
 ### HTTP Request
 
@@ -137,6 +138,7 @@ This endpoint creates a portfolio if it does not already exist for the given (Us
 
 Parameter | Required | Description
 --------- |----------| -----------
+UserId | required | User Id who created the portfolio
 Name | required | Portfolio's name
 
 
@@ -177,7 +179,7 @@ requests.get(
 }
 ```
 
-This endpoint returns all portfolios created by the user.
+This endpoint returns all portfolios created by the user Id.
 
 ### HTTP Request
 
@@ -197,7 +199,7 @@ UserId | required  | User's ID
 ```python
 import requests
 data = {
-  "PortfolioID": 1,
+  "PortfolioId": 1,
   "BusinessUnit": "DataDepartment",
   "Name": "RefactoDatalake",
   "Reference": "R01",
@@ -217,13 +219,14 @@ requests.post(
 ```json
 {
   "Status": 201,
-  "PortfolioID": 1,
+  "PortfolioId": 1,
   "Id": 1,
   "Name": "RefactoDatalake"
 }
 ```
 
-This endpoint creates a project if it does not already exist for the given (PortfolioID, Name).
+This endpoint creates a project. The tuple (PortfolioId, Name) must be unique.
+Return an error if (PortfolioId, Name) already exists in the database.
 
 ### HTTP Request
 
@@ -233,7 +236,7 @@ This endpoint creates a project if it does not already exist for the given (Port
 
 Parameter | Required | Description
 --------- |----------| -----------
-PortfolioID | required | Portfolio ID the project belongs to
+PortfolioId | required | Portfolio ID the project belongs to
 BusinessUnit | optional | Project's business unit
 Name | required | Project's name
 Reference | required | Project's reference
@@ -337,7 +340,9 @@ requests.post(
 }
 ```
 
-This endpoint creates project metric if does not already exist for the given (Name)
+This endpoint creates a project metric. It's name must be unique.
+Return an error if the metric's name already exists in the database.
+
 
 ### HTTP Request
 
@@ -378,7 +383,9 @@ requests.post(
 }
 ```
 
-This endpoint creates project evaluation if it does not already exist for the given (ProjectId, ProjectMetricId)
+This endpoint creates a project evaluation. The tuple (ProjectId, ProjectMetricId) must be unique.
+Return an error if (ProjectId, ProjectMetricId) already exists in the database.
+
 
 ### HTTP Request
 
@@ -421,7 +428,8 @@ requests.post(
 }
 ```
 
-This endpoint creates a project constraint if it does not already exist for the given (ProjectAId, ProjectBId).
+This endpoint creates a project constraint. The tuple (ProjectAId, ProjectBId) must be unique.
+Return an error if (ProjectAId, ProjectBId) already exists in the database.
 
 ### HTTP Request
 
@@ -477,10 +485,7 @@ ProjectId | required | Project ID holding the constraint
 Date | required | Date reference
 Type | required | Type of constraint (exact, before, after)
 
-
-
 # Resources
-
 ## Create a resource type
 
 ```python
@@ -508,7 +513,8 @@ requests.post(
 }
 ```
 
-This endpoint creates a resource type if it does not already exist for the given (PortfolioId, Name).
+This endpoint creates a resource type. The tuple (PortfolioId, Name) must be unique.
+Return an error if (PortfolioId, Name) already exists in the database.
 
 ### HTTP Request
 
@@ -552,7 +558,8 @@ requests.post(
 }
 ```
 
-This endpoint creates a resource availability if it does not already exist for the given (ResourceTypeId, Year, Month).
+This endpoint creates a resource availability. The tuple (ResourceTypeId, Year, Month) must be unique.
+Return an error if (ResourceTypeId, Year, Month) already exists in the database.
 
 ### HTTP Request
 
@@ -597,7 +604,10 @@ requests.post(
 }
 ```
 
-This endpoint creates a resource need for a project if it does not already exist for the given (ResourceTypeId, ProjectId, MonthIndex).
+This endpoint creates a resource need for a project. The tuple (ResourceTypeId, ProjectId, MonthIndex) must be unique.
+Return an error if (ResourceTypeId, ProjectId, MonthIndex) already exists in the database.
+
+
 
 ### HTTP Request
 
@@ -643,7 +653,7 @@ requests.post(
 }
 ```
 
-This endpoint creates a new roadmap exercise for the given PortfolioId.
+This endpoint creates a new roadmap exercise for the PortfolioId.
 
 ### HTTP Request
 
@@ -689,7 +699,7 @@ requests.post(
 {
   "Status": 201,
   "Id": 1,
-  "RoadmapExerciseId": 1,
+  "RoadmapExerciseId": 1
 }
 ```
 
@@ -757,7 +767,7 @@ This endpoint returns a roadmap candidate.
 
 ### HTTP Request
 
-`GET /v1/portfolio_optimizer/roadmap_candidate`
+`GET /v1/portfolio_optimizer/roadmap_candidate/:RoadmapCandidateId`
 
 
 ## Create a roadmap candidate evaluation
@@ -802,7 +812,7 @@ Value | required | Metric value
 
 # Optimization
 
-## Create a optimization run request
+## Create an optimization run request
 
 ```python
 import requests
@@ -843,13 +853,14 @@ Config | required | Run config
 
 
 
-## Get the status of an optimization run
+## Get an optimization run
 
 ```python
 import requests
 roadmap_exercise_id = 1
+optimization_run_id = 1
 requests.get(
-  '{base_url}/v1/portfolio_optimizer/optimization_run/:{roadmap_exercise_id}',
+  '{base_url}/v1/portfolio_optimizer/optimization_run/:{roadmap_exercise_id}:{optimization_run_id}',
 )
 ```
 
