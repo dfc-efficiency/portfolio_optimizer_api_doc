@@ -398,10 +398,10 @@
             <a href="#optimization" class="toc-h1 toc-link" data-title="Optimization">Optimization</a>
               <ul class="toc-list-h2">
                   <li>
-                    <a href="#create-a-optimization-run-request" class="toc-h2 toc-link" data-title="Create a optimization run request">Create a optimization run request</a>
+                    <a href="#create-an-optimization-run-request" class="toc-h2 toc-link" data-title="Create an optimization run request">Create an optimization run request</a>
                   </li>
                   <li>
-                    <a href="#get-the-status-of-an-optimization-run" class="toc-h2 toc-link" data-title="Get the status of an optimization run">Get the status of an optimization run</a>
+                    <a href="#get-an-optimization-run" class="toc-h2 toc-link" data-title="Get an optimization run">Get an optimization run</a>
                   </li>
               </ul>
           </li>
@@ -457,7 +457,7 @@
   </span><span class="nl">"Id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
-<p>This endpoint creates a user.</p>
+<p>This endpoint creates a user with the specified role ID.</p>
 <h3 id='http-request-2'>HTTP Request</h3>
 <p><code>POST /v1/portfolio_optimizer/user</code></p>
 <h3 id='url-parameters'>URL Parameters</h3>
@@ -518,7 +518,8 @@
   </span><span class="nl">"Id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
-<p>This endpoint creates a portfolio if it does not already exist for the given (UserId, Name).</p>
+<p>This endpoint creates a portfolio. The tuple (UserId, Name) must be unique.
+Return an error if (UserId, Name) already exists in the database.</p>
 <h3 id='http-request-3'>HTTP Request</h3>
 <p><code>POST /v1/portfolio_optimizer/portfolio</code></p>
 <h3 id='url-parameters-2'>URL Parameters</h3>
@@ -529,6 +530,11 @@
 <th>Description</th>
 </tr>
 </thead><tbody>
+<tr>
+<td>UserId</td>
+<td>required</td>
+<td>User Id who created the portfolio</td>
+</tr>
 <tr>
 <td>Name</td>
 <td>required</td>
@@ -567,7 +573,7 @@
   </span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
-<p>This endpoint returns all portfolios created by the user.</p>
+<p>This endpoint returns all portfolios created by the user Id.</p>
 <h3 id='http-request-4'>HTTP Request</h3>
 <p><code>POST /v1/portfolio_optimizer/portfolio/:UserId</code></p>
 <h3 id='url-parameters-3'>URL Parameters</h3>
@@ -586,7 +592,7 @@
 </tbody></table>
 <h1 id='project'>Project</h1><h2 id='create-a-project'>Create a project</h2><div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
 <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
-  <span class="s">"PortfolioID"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="s">"PortfolioId"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
   <span class="s">"BusinessUnit"</span><span class="p">:</span> <span class="s">"DataDepartment"</span><span class="p">,</span>
   <span class="s">"Name"</span><span class="p">:</span> <span class="s">"RefactoDatalake"</span><span class="p">,</span>
   <span class="s">"Reference"</span><span class="p">:</span> <span class="s">"R01"</span><span class="p">,</span>
@@ -605,12 +611,13 @@
 </blockquote>
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
   </span><span class="nl">"Status"</span><span class="p">:</span><span class="w"> </span><span class="mi">201</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"PortfolioID"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"PortfolioId"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
   </span><span class="nl">"Id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
   </span><span class="nl">"Name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"RefactoDatalake"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
-<p>This endpoint creates a project if it does not already exist for the given (PortfolioID, Name).</p>
+<p>This endpoint creates a project. The tuple (PortfolioId, Name) must be unique.
+Return an error if (PortfolioId, Name) already exists in the database.</p>
 <h3 id='http-request-5'>HTTP Request</h3>
 <p><code>POST /v1/portfolio_optimizer/portfolio</code></p>
 <h3 id='url-parameters-4'>URL Parameters</h3>
@@ -622,7 +629,7 @@
 </tr>
 </thead><tbody>
 <tr>
-<td>PortfolioID</td>
+<td>PortfolioId</td>
 <td>required</td>
 <td>Portfolio ID the project belongs to</td>
 </tr>
@@ -750,7 +757,8 @@
   </span><span class="nl">"Name"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
-<p>This endpoint creates project metric if does not already exist for the given (Name)</p>
+<p>This endpoint creates a project metric. It&#39;s name must be unique.
+Return an error if the metric&#39;s name already exists in the database.</p>
 <h3 id='http-request-7'>HTTP Request</h3>
 <p><code>POST /v1/portfolio_optimizer/project_metric</code></p>
 <h3 id='url-parameters-6'>URL Parameters</h3>
@@ -797,7 +805,8 @@
   </span><span class="nl">"ProjectMetricId"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
-<p>This endpoint creates project evaluation if it does not already exist for the given (ProjectId, ProjectMetricId)</p>
+<p>This endpoint creates a project evaluation. The tuple (ProjectId, ProjectMetricId) must be unique.
+Return an error if (ProjectId, ProjectMetricId) already exists in the database.</p>
 <h3 id='http-request-8'>HTTP Request</h3>
 <p><code>POST /v1/portfolio_optimizer/project_evaluation</code></p>
 <h3 id='url-parameters-7'>URL Parameters</h3>
@@ -847,7 +856,8 @@
   </span><span class="nl">"MonthlyIndexDelay"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
-<p>This endpoint creates a project constraint if it does not already exist for the given (ProjectAId, ProjectBId).</p>
+<p>This endpoint creates a project constraint. The tuple (ProjectAId, ProjectBId) must be unique.
+Return an error if (ProjectAId, ProjectBId) already exists in the database.</p>
 <h3 id='http-request-9'>HTTP Request</h3>
 <p><code>POST /v1/portfolio_optimizer/project_constraint</code></p>
 <h3 id='url-parameters-8'>URL Parameters</h3>
@@ -949,7 +959,8 @@
   </span><span class="nl">"ResourceTypeId"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
-<p>This endpoint creates a resource type if it does not already exist for the given (PortfolioId, Name).</p>
+<p>This endpoint creates a resource type. The tuple (PortfolioId, Name) must be unique.
+Return an error if (PortfolioId, Name) already exists in the database.</p>
 <h3 id='http-request-11'>HTTP Request</h3>
 <p><code>POST /v1/portfolio_optimizer/resource_type</code></p>
 <h3 id='url-parameters-10'>URL Parameters</h3>
@@ -1004,7 +1015,8 @@
   </span><span class="nl">"Month"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
-<p>This endpoint creates a resource availability if it does not already exist for the given (ResourceTypeId, Year, Month).</p>
+<p>This endpoint creates a resource availability. The tuple (ResourceTypeId, Year, Month) must be unique.
+Return an error if (ResourceTypeId, Year, Month) already exists in the database.</p>
 <h3 id='http-request-12'>HTTP Request</h3>
 <p><code>POST /v1/portfolio_optimizer/resource_type_availability</code></p>
 <h3 id='url-parameters-11'>URL Parameters</h3>
@@ -1064,7 +1076,8 @@
   </span><span class="nl">"MonthIndex"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
-<p>This endpoint creates a resource need for a project if it does not already exist for the given (ResourceTypeId, ProjectId, MonthIndex).</p>
+<p>This endpoint creates a resource need for a project. The tuple (ResourceTypeId, ProjectId, MonthIndex) must be unique.
+Return an error if (ResourceTypeId, ProjectId, MonthIndex) already exists in the database.</p>
 <h3 id='http-request-13'>HTTP Request</h3>
 <p><code>POST /v1/portfolio_optimizer/resource_type_need</code></p>
 <h3 id='url-parameters-12'>URL Parameters</h3>
@@ -1123,7 +1136,7 @@
   </span><span class="nl">"StartDate"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2023-01-01"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
-<p>This endpoint creates a new roadmap exercise for the given PortfolioId.</p>
+<p>This endpoint creates a new roadmap exercise for the PortfolioId.</p>
 <h3 id='http-request-14'>HTTP Request</h3>
 <p><code>POST /v1/portfolio_optimizer/roadmap_exercise</code></p>
 <h3 id='url-parameters-13'>URL Parameters</h3>
@@ -1181,7 +1194,7 @@
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
   </span><span class="nl">"Status"</span><span class="p">:</span><span class="w"> </span><span class="mi">201</span><span class="p">,</span><span class="w">
   </span><span class="nl">"Id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"RoadmapExerciseId"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"RoadmapExerciseId"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>This endpoint creates a new roadmap candidate for the given roadmap exercise.</p>
@@ -1248,7 +1261,7 @@
 </span></code></pre></div>
 <p>This endpoint returns a roadmap candidate.</p>
 <h3 id='http-request-16'>HTTP Request</h3>
-<p><code>GET /v1/portfolio_optimizer/roadmap_candidate</code></p>
+<p><code>GET /v1/portfolio_optimizer/roadmap_candidate/:RoadmapCandidateId</code></p>
 <h2 id='create-a-roadmap-candidate-evaluation'>Create a roadmap candidate evaluation</h2><div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
 <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
   <span class="s">"RoadmapCandidateId"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
@@ -1296,7 +1309,7 @@
 <td>Metric value</td>
 </tr>
 </tbody></table>
-<h1 id='optimization'>Optimization</h1><h2 id='create-a-optimization-run-request'>Create a optimization run request</h2><div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
+<h1 id='optimization'>Optimization</h1><h2 id='create-an-optimization-run-request'>Create an optimization run request</h2><div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
 <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
   <span class="s">"RoadmapExerciseId"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
   <span class="s">"UserId"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
@@ -1343,10 +1356,11 @@
 <td>Run config</td>
 </tr>
 </tbody></table>
-<h2 id='get-the-status-of-an-optimization-run'>Get the status of an optimization run</h2><div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
+<h2 id='get-an-optimization-run'>Get an optimization run</h2><div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
 <span class="n">roadmap_exercise_id</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">optimization_run_id</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="n">requests</span><span class="p">.</span><span class="n">get</span><span class="p">(</span>
-  <span class="s">'{base_url}/v1/portfolio_optimizer/optimization_run/:{roadmap_exercise_id}'</span><span class="p">,</span>
+  <span class="s">'{base_url}/v1/portfolio_optimizer/optimization_run/:{roadmap_exercise_id}:{optimization_run_id}'</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
 <blockquote>
